@@ -1,0 +1,19 @@
+%YAML 1.2
+---
+_service_reload_cmds:
+  main_reloader: &service_main_reload
+    mainservice:
+      cmd: [ "killall", "-HUP", "service" ]
+  another_reloader: &service_another_reload
+    anotherservice:
+      cmd: [ "systemctl", "restart", "service1", "service2", "service3" ]
+
+authorization_list:
+  - name: test.example.com
+    reload: *service_main_reload
+  - name: second.example.com
+    domains: second.example.com,www.second.example.com
+    reload: *service_main_reload
+
+  - name: third.example.com
+    domains: /third[0-9]?.example.com/
